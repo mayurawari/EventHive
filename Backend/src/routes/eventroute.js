@@ -4,7 +4,7 @@ import eventmodel from "../config/models/eventmodel.js";
 import participantmodel from "../config/models/participantmodel.js";
 const Eventroute = Router();
 
-Eventroute.get("/events", role("admin"), async(req, res) => {
+Eventroute.get("/events", async(req, res) => {
   try {
     let events=await eventmodel.find();
 
