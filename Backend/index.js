@@ -2,9 +2,9 @@ import express from "express";
 import { config } from "dotenv";
 import connectdb from "./src/config/databases/db.js";
 import userroute from "./src/routes/userroute.js";
-import productroute from "./src/routes/productroute.js";
 import auth from "./src/middlewares/auth.js";
-import tokengenrater from "./src/routes/refreshtoken.js";
+import Eventroute from "./src/routes/eventroute.js";
+import cookieParser from "cookie-parser";
 config();
 
 const port=process.env.PORT || 8080;
@@ -12,10 +12,10 @@ const url=process.env.URL;
 
 const server=express();
 server.use(express.json());
+server.use(cookieParser());
 
 server.use("/api",userroute);
-server.use("/api/products",auth,productroute);
-server.use("/api/token",tokengenrater);
+server.use("/api/get",auth,Eventroute);
 
 
 server.get("/",(req,res)=>{
