@@ -41,49 +41,45 @@ userroute.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
     if (!username || !password) {
-      return res.status(400).json({ message: "enter proper details" });
+      return res.status(400).json({ message: "Enter proper details" });
     }
 
     const existuser = await usermodel.findOne({ username: username });
     if (!existuser) {
-      return res
-        .status(400)
-        .json({ message: "please register first and then try to login " });
+      return res.status(400).json({ message: "Please register first and then try to login" });
     }
 
     bcrypt.compare(password, existuser.password, async (err, result) => {
-      if (err) console.log(err);
-      else {
-        if (result) {
-          jwt.sign(
-            { username: existuser.username, role: existuser.role },
-            key,
-            (err, token) => {
-              if (err) console.log(err);
-              else {
-                console.log(token);
-                res.cookie("accesstoken", token, {
-                  httpOnly: true,
-                  secure: process.env.NODE_ENV === "production",
-                  sameSite: "Strict",
-                  maxAge: 864000000,
-                });
-                return res.status(200).json({ accestoken: token });
-              }
-            }
-          );
-          await existuser.save();
-        } else {
-          return res.status(400).json({
-            message: "details not correct",
-          });
-        }
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ message: "Error comparing passwords" });
+      }
+
+      if (result) {
+        jwt.sign({ username: existuser.username, role: existuser.role }, key, (err, token) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({ message: "Token generation failed" });
+          } else {
+            res.cookie("accesstoken", token, {
+              httpOnly: true,
+              secure: process.env.NODE_ENV === "production",
+              sameSite: "Strict",
+              maxAge: 864000000,
+            });
+            return res.status(200).json({ message: "Logged in successfully" });
+          }
+        });
+      } else {
+        return res.status(400).json({ message: "Details not correct" });
       }
     });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ message: "Server error" });
   }
 });
+
 
 userroute.post("/logout", async (req, res) => {
   const header = req.cookies.accesstoken;

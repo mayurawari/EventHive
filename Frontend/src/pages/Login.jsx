@@ -21,9 +21,6 @@ export const Login = () => {
                 },
                 withCredentials: true
               });
-
-              
-               
                 setLoggedin(true);
                 setError('');
                 alert("Logged in successfully");
