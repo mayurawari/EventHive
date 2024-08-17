@@ -5,6 +5,7 @@ import userroute from "./src/routes/userroute.js";
 import auth from "./src/middlewares/auth.js";
 import Eventroute from "./src/routes/eventroute.js";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 config();
 
 const port=process.env.PORT || 8080;
@@ -13,6 +14,7 @@ const url=process.env.URL;
 const server=express();
 server.use(express.json());
 server.use(cookieParser());
+server.use(cors());
 
 server.use("/api",userroute);
 server.use("/api/get",auth,Eventroute);
