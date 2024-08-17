@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken"
 import blacklistModel from "../config/models/blaclistModel.js";
 
 const auth = async (req, res, next) => {
-  const header =req.cookies.accesstoken;
+  const header =await req.cookies.accesstoken;
   if (!header) {
     return res.status(400).json({
       message: "token header is not present or token is not provided",
