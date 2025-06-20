@@ -1,8 +1,8 @@
-import React from 'react'
+// import React from 'react'
 
-type Props = {}
+// type Props = {}
 
-const Movies = (props: Props) => {
+const Movies = () => {
   return (
     <div>Movies</div>
   )

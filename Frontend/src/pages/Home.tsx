@@ -1,5 +1,5 @@
 import type React from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence} from "motion/react";
 import EventhiveSplash from "./splashscreen/EventhiveSplash";
 import { useEffect, useState } from "react";
 import Main from "./main/Main";
