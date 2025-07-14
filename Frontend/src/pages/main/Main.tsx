@@ -1,10 +1,8 @@
 import React from "react";
 import Navbar from "./Navbar";
 import { motion } from "motion/react";
-// import Djvideo from "../../assets/concerts/videos/16476271-hd_1920_1080_60fps.mp4";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useNavigate } from "react-router-dom";
-// import Logo from "../../assets/png/logo.png";
 type Props = {};
 
 const Main: React.FC<Props> = () => {
