@@ -1,16 +1,20 @@
 import type React from "react";
-import { AnimatePresence} from "motion/react";
+import { AnimatePresence } from "motion/react";
 import EventhiveSplash from "./splashscreen/EventhiveSplash";
 import { useEffect, useState } from "react";
 import Main from "./main/Main";
 
 const Home: React.FC = () => {
-  const [splascreenFlag, setSplashScreenFlag] = useState(true);
+  const [splashscreenFlag, setSplashScreenFlag] = useState<boolean>(()=>JSON.parse(localStorage.getItem("splashShown") || "true"));
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setSplashScreenFlag(false);
-    }, 3500);
+    let timeout: any;
+    if(splashscreenFlag){
+      timeout = setTimeout(() => {
+        setSplashScreenFlag(false);
+        localStorage.setItem("splashShown" , "false");
+      }, 2000);
+    }
 
     return () => {
       clearTimeout(timeout);
@@ -18,16 +22,10 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div>
-
-    <AnimatePresence mode="wait" >
-        {splascreenFlag ? (
-          <EventhiveSplash key="splash" />
-        ): (
-          <Main/> 
-        )
-      }
-    </AnimatePresence>
+    <div className="bg-[url('/textures/asfalt-light.png')] bg-repeat">
+      <AnimatePresence mode="wait">
+        {splashscreenFlag ? <EventhiveSplash key="splash" /> : <Main />}
+      </AnimatePresence>
     </div>
   );
 };

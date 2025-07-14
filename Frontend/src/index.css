@@ -1,1 +1,34 @@
 @import "tailwindcss";
+
+@layer utilities {
+  .font-poppins {
+    font-family: "Poppins", sans-serif;
+  }
+  .great-vibes-regular {
+    font-family: "Great Vibes", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .lightBg{
+    background-color: #EBE9E1;
+  }
+  .lightAltBg{
+    background-color: #FFA2B6;
+  }
+  .lightBoldText{
+    color: #E43D12;
+  }
+  .lightAltText{
+    color: #d6536d;
+  }
+  .darkBg{
+    background-image: linear-gradient(to bottom right, #0b0811, #2a1b3d, #44318d);
+  }
+  .darkBoldText{
+    color: white;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
