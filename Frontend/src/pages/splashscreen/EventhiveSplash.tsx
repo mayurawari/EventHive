@@ -1,4 +1,3 @@
-import video from "../../assets/mp4/glow.mp4";
 import { easeInOut, motion} from 'motion/react'
 
 const EventhiveSplash = () => {
