@@ -22,7 +22,7 @@ export const LoginUser = createAsyncThunk(
     'user/login',
     async (credentials: { email: string, password: string }, thunkApi) => {
         try {
-            const res = await axios.post("https://event-hive-backend.vercel.app/", credentials);
+            const res = await axios.post("https://event-hive-backend.vercel.app/api/login", credentials);
 
             localStorage.setItem("token", res.data.token)
 
@@ -37,9 +37,9 @@ export const LoginUser = createAsyncThunk(
 //Register User == create profile
 export const RegisterUser = createAsyncThunk(
     'user/Register',
-    async (credentials: {name: string, email: string, password: string }, thunkApi) => {
+    async (credentials: { name: string, email: string, password: string }, thunkApi) => {
         try {
-            const res = await axios.post("https://event-hive-backend.vercel.app/", credentials);
+            const res = await axios.post("https://event-hive-backend.vercel.app/api/register", credentials);
 
             localStorage.setItem("token", res.data.token)
 
@@ -63,6 +63,47 @@ const authSlice = createSlice({
             state.isLoggedin = false;
             state.token = null;
         }
+    },
+    extraReducers: (builder) => {
+        builder
+            //Login States
+            .addCase(LoginUser.pending, (state) => {
+                state.isLoading = true;
+                state.error = null
+            })
+            .addCase(LoginUser.fulfilled, (state, action) => {
+                state.user = action.payload.user;
+                state.isLoading = false;
+                state.error = null;
+                state.isLoggedin = true;
+                state.token = action.payload.token
+            })
+            .addCase(LoginUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload as string;
+            })
+
+            //Register States
+            .addCase(RegisterUser.pending, (state) => {
+                state.isLoading = true;
+                state.error = null;
+            })
+            .addCase(RegisterUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.user = action.payload.user;
+                state.token = action.payload.token;
+                state.isLoggedin = true;
+                state.error = null;
+            })
+            .addCase(RegisterUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.payload as string;
+            });
     }
 })
+
+
+export const { logout } = authSlice.actions;
+export default authSlice.reducer;
+
 
