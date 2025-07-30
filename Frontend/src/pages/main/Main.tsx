@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import { motion } from "motion/react";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useNavigate } from "react-router-dom";
+import Footer from "./footer";
 type Props = {};
 
 const Main: React.FC<Props> = () => {
@@ -19,6 +20,7 @@ const Main: React.FC<Props> = () => {
         animate={{
           opacity: 1,
         }}
+        
         transition={{
           duration: 0.5,
           ease: "easeInOut",
@@ -90,6 +92,7 @@ const Main: React.FC<Props> = () => {
             </div>
           </div>
         </motion.div>
+        <Footer/>
       </motion.div>
     </>
   );

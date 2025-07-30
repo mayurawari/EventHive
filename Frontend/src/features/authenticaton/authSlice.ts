@@ -13,7 +13,7 @@ const initialState: AuthState = {
     user: null,
     isLoading: false,
     error: null,
-    isLoggedin: !!localStorage.getitem("token"),
+    isLoggedin: !!localStorage.getItem("token"),
     token: localStorage.getItem("token") || null
 }
 

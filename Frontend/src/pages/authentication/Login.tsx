@@ -1,12 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { LoginUser } from "../../features/authenticaton/authSlice";
 
-type LoginProps = {};
+// Login page for user authentication
+const Login: React.FC = () => {
+  // Redux hooks for dispatching actions and selecting state
+  const dispatch = useAppDispatch();
+  const theme = useAppSelector((state) => state.theme.theme);
+  const { isLoading, error, isLoggedin } = useAppSelector((state) => state.auth);
 
-const Login: React.FC<LoginProps> = () => {
-  const theme = useAppSelector((state)=> state.theme.theme);
+  // Local state for form fields
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // React Router hook for navigation
+  const navigate = useNavigate();
+
+  // Redirect to home if already logged in
+  useEffect(() => {
+    if (isLoggedin) {
+      navigate("/");
+    }
+  }, [isLoggedin, navigate]);
+
+  // Handle form submission
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
+    dispatch(LoginUser({ email, password }));
+  };
+
   return (
     <>
       <motion.div
@@ -32,7 +57,8 @@ const Login: React.FC<LoginProps> = () => {
               Log In
             </motion.h1>
           </motion.div>
-          <motion.form className="flex justify-center items-start flex-col">
+          {/* Login form */}
+          <motion.form className="flex justify-center items-start flex-col" onSubmit={handleLogin}>
             <motion.label
               className={`text-lg font-medium ${
                 theme === "dark" ? "text-white" : "lightBoldText"
@@ -45,6 +71,10 @@ const Login: React.FC<LoginProps> = () => {
               className={`border border-gray-400 rounded-xl p-2 w-full ${
                 theme === "dark" ? "placeholder-blue-50" : "placeholder-black"
               } text-xs placeholder-opacity-25 `}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
             <motion.label
               className={`text-lg font-medium ${
@@ -58,8 +88,24 @@ const Login: React.FC<LoginProps> = () => {
               className={`border border-gray-400 rounded-xl p-2 w-full ${
                 theme === "dark" ? "placeholder-blue-50" : "placeholder-black"
               } text-xs placeholder-opacity-25 `}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
-            <motion.button className="p-2 w-full bg-black rounded-xl text-white mt-5">
+            {/* Show loading indicator while logging in */}
+            {isLoading && (
+              <motion.p className="text-blue-500 mt-2">Logging in...</motion.p>
+            )}
+            {/* Show error message if login fails */}
+            {error && (
+              <motion.p className="text-red-500 mt-2">{error}</motion.p>
+            )}
+            <motion.button
+              className="p-2 w-full bg-black rounded-xl text-white mt-5"
+              type="submit"
+              disabled={isLoading}
+            >
               Login
             </motion.button>
           </motion.form>
