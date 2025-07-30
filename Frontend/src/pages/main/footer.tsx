@@ -1,17 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 // Accent colors. Tweak as desired!
 // Gold: #FFD700, Rose: #ff4e8a, Platinum: #e5e4e2
-const premiumAccent = "text-[#FFD700]";
+// const premiumAccent = "text-[#FFD700]";
 const secondaryAccent = "text-[#ff4e8a]";
-const linkColor = "hover:text-[#e5e4e2] transition-colors duration-150";
+// const linkColor = "hover:text-[#e5e4e2] transition-colors duration-150";
 
-const navLinks = [
-  { label: "Home", to: "/" },
-  { label: "About", to: "/about" },
-  { label: "Contact", to: "/contact" },
-];
+// const navLinks = [
+//   { label: "Home", to: "/" },
+//   { label: "About", to: "/about" },
+//   { label: "Contact", to: "/contact" },
+// ];
 
 const Footer: React.FC = () => (
   <footer className="fixed bottom-0 w-full bg-black py-6 px-6 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-[#22222a] shadow-lg z-50">
@@ -35,7 +35,7 @@ const Footer: React.FC = () => (
           {link.label}
         </Link>
       ))} */}
-       <span className={`uppercase font-extralight tracking-widest text-sm ${premiumAccent}`}>
+       <span className={`uppercase font-extralight tracking-widest text-sm color-white`}>
         रससंगमम् एव प्रारम्भः – यत्र स्पन्दः न विरामति!
       </span>
     </div>

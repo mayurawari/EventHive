@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
         backgroundColor: theme === "dark" ? "" : "#ebe9e1"
       }}
       transition={{ duration: 0.15, ease: "easeInOut" }}
-      className="h-20 flex justify-between items-center px-6 md:px-10 relative"
+      className="sticky top-0 h-20 flex justify-between items-center px-6 md:px-10 "
     >
       {/* Hamburger always visible */}
       <button
@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
       <div className="flex-1" />
 
       {/* Theme Toggle */}
-      <Toggle />
+      <Toggle className="" />
 
       {/* EventHive logo ONLY on Home */}
       <AnimatePresence>
@@ -85,7 +85,7 @@ const Navbar: React.FC = () => {
             >
               <button
                 aria-label="Close menu"
-                className="mb-8 self-end text-2xl"
+                className="mb-5 self-end text-2xl text-[#ff4e8a] font-bold"
                 onClick={() => setSidebarOpen(false)}
               >
                 ×
@@ -104,7 +104,7 @@ const Navbar: React.FC = () => {
               </ul>
             </motion.aside>
             <motion.div
-              className="fixed inset-0 bg-black/40 z-30"
+              className="fixed inset-0 bg-grey-100 z-30"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
