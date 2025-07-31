@@ -8,7 +8,8 @@ type Props = {};
 
 const Main: React.FC<Props> = () => {
   const theme = useAppSelector((state) => state.theme.theme);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const sidebarOpen = useAppSelector((state) => state.sidebar.isOpen);
 
   return (
     <>
@@ -20,7 +21,6 @@ const Main: React.FC<Props> = () => {
         animate={{
           opacity: 1,
         }}
-        
         transition={{
           duration: 0.5,
           ease: "easeInOut",
@@ -36,17 +36,25 @@ const Main: React.FC<Props> = () => {
                 autoPlay
                 muted
                 loop
-                className="opacity-20 z-0 "
+                className="opacity-20 image-full h-screen object-cover"
               >
-                <source src={"https://res.cloudinary.com/dgfehnbu5/video/upload/v1751079981/16476271-hd_1920_1080_60fps_gjisdi.mp4"} type="video/mp4" />
+                <source
+                  src={
+                    "https://res.cloudinary.com/dgfehnbu5/video/upload/v1751079981/16476271-hd_1920_1080_60fps_gjisdi.mp4"
+                  }
+                  type="video/mp4"
+                />
                 Your browser does not support the video tag.
               </motion.video>
             </div>
           ) : (
-            <div className="w-full h-screen flex justify-center items-center bg-[#EBE9E1]">
-            </div>
+            <div className="w-full h-screen flex justify-center items-center bg-[#EBE9E1]"></div>
           )}
-          <div className="absolute flex justify-center items-center flex-col gap-1 top-30 right-50">
+          <div
+            className={`absolute flex justify-center items-center flex-col gap-1 top-50 z-10 w-full px-4 md:opacity-100 ${
+              sidebarOpen ? "pointer-events-none opacity-2" : ""
+            }`}
+          >
             <motion.p
               animate={{
                 opacity: [0, 1],
@@ -56,16 +64,16 @@ const Main: React.FC<Props> = () => {
                 type: "spring",
                 duration: 0.5,
                 bounce: 0,
-                staggerChildren:0.25,
+                staggerChildren: 0.25,
               }}
               className={`${
                 theme === "dark" ? "text-white" : "text-[#E43D12]"
-              } text-[80px] font-poppins font-bold`}
+              } text-[30px]  font-poppins font-bold sm:text-4xl md:text-5xl lg:text-6xl`}
             >
               EventHive Fuels
             </motion.p>
             <motion.span
-            animate={{
+              animate={{
                 opacity: [0, 1],
                 y: [10, 0],
               }}
@@ -73,26 +81,40 @@ const Main: React.FC<Props> = () => {
                 type: "spring",
                 duration: 0.5,
                 bounce: 0,
-                delay:0.5
+                delay: 0.5,
               }}
-              className={`great-vibes-regular text-[80px] ${
+              className={`great-vibes-regular  ${
                 theme === "dark" ? "text-white" : "text-[#E43D12]"
-              } font-bold`}
+              } font-bold text-[30px] sm:text-4xl md:text-5xl lg:text-6xl sm-align-center sm-justify-center`}
             >
               Their Fun
             </motion.span>
 
-            <div>
-              <motion.button onClick={()=>navigate('/Register')} className={`w-40 h-11 rounded-2xl text-[16px] font-medium ${theme==="dark" ? "text-white" :"text-[#E43D12]"} ${theme === "dark" ? "bg-black" : "bg-[#FFA2B6]"} font-poppins m-2`}>
+            <div className="flex justify-center items-center">
+              <motion.button
+                onClick={() => navigate("/Register")}
+                className={`w-40 h-11 rounded-2xl text-[16px] font-medium ${
+                  theme === "dark" ? "text-white" : "text-[#E43D12]"
+                } ${
+                  theme === "dark" ? "bg-black" : "bg-[#FFA2B6]"
+                } font-poppins m-2`}
+              >
                 Create Profile
               </motion.button>
-              <motion.button onClick={()=>navigate('/Login')} className={`w-40 h-11 rounded-2xl text-[16px] font-medium ${theme==="dark" ? "text-white" :"text-[#E43D12]"} ${theme === "dark" ? "bg-black" : "bg-[#FFA2B6]"} font-poppins m-2`}>
+              <motion.button
+                onClick={() => navigate("/Login")}
+                className={`w-40 h-11 rounded-2xl text-[16px] font-medium ${
+                  theme === "dark" ? "text-white" : "text-[#E43D12]"
+                } ${
+                  theme === "dark" ? "bg-black" : "bg-[#FFA2B6]"
+                } font-poppins m-2`}
+              >
                 Hop In
               </motion.button>
             </div>
           </div>
         </motion.div>
-        <Footer/>
+        <Footer />
       </motion.div>
     </>
   );

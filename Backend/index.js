@@ -7,6 +7,7 @@ import Authroute from "./src/routes/authroute.js";
 import cookieParser from "cookie-parser";
 
 const server = express();
+// mongodb+srv://mayur:mayur@cluster0.oul5ack.mongodb.net/EventHive?retryWrites=true&w=majority&appName=Cluster0
 
 server.use(express.json());
 server.use(cookieParser());

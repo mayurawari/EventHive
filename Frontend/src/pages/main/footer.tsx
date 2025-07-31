@@ -14,12 +14,9 @@ const secondaryAccent = "text-[#ff4e8a]";
 // ];
 
 const Footer: React.FC = () => (
-  <footer className="fixed bottom-0 w-full bg-black py-6 px-6 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-[#22222a] shadow-lg z-50">
+  <footer className="z-10 sticky bottom-0 w-full bg-black py-6 px-6 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-[#22222a] shadow-lg">
     {/* Brand */}
     <div className="flex items-center gap-2">
-      {/* <span className={`uppercase font-extrabold tracking-widest text-2xl ${premiumAccent}`}>
-        EventHive
-      </span> */}
       <span className={`text-sm ${secondaryAccent} mt-1 ml-2 font-medium tracking-wide`}>
         Premium Events Platform
       </span>

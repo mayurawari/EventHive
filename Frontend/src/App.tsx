@@ -13,11 +13,27 @@ import HealthandFitness from "./pages/screens/Health&Fitness";
 import { store } from "./app/store";
 import Login from "./pages/authentication/Login";
 import Register from "./pages/authentication/Registration";
+import { ReactLenis } from 'lenis/react';
+import type { LenisRef } from 'lenis/react';
+import { cancelFrame, frame } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
 function App() {
+  const lenisRef = useRef<LenisRef>(null);
+  useEffect(() => {
+    function update(data: { timestamp: number }) {
+      const time = data.timestamp
+      lenisRef.current?.lenis?.raf(time)
+    }
+
+    frame.update(update, true)
+
+    return () => cancelFrame(update)
+  }, [])
   return (
     <>
     <Provider store={store}>
+    <ReactLenis root options={{ autoRaf: false }} ref={lenisRef} />
     <div className="bg-gradient-to-br from-[#0b0811] via-[#2a1b3d] to-[#44318d] ">
       <Router>
         <Routes>

@@ -10,7 +10,9 @@ const Register: React.FC = () => {
   // Redux hooks for dispatching actions and selecting state
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
-  const { isLoading, error, isLoggedin } = useAppSelector((state) => state.auth);
+  const { isLoading, error, isLoggedin } = useAppSelector(
+    (state) => state.auth
+  );
 
   // Local state for form fields
   const [name, setName] = useState("");
@@ -37,16 +39,16 @@ const Register: React.FC = () => {
     <motion.div
       className={`${
         theme === "dark" ? "darkBg" : "lightBg"
-      } w-full h-screen flex justify-center items-center flex-col `}
+      } w-full min-h-screen flex justify-center items-center flex-col px-3`}
     >
       <motion.div
-        className={`w-120  rounded-3xl ${
+        className={`w-full max-w-xs sm:max-w-sm md:max-w-md rounded-3xl ${
           theme === "dark"
             ? "bg-transparent border border-white"
             : "bg-transparent border-2 border-[#FFA2B6]"
-        } p-5`}
+        } p-5 sm:p-8`}
       >
-        <motion.div className={`w-full m-2  flex justify-center items-center`}>
+        <motion.div className="w-full m-2 flex justify-center items-center">
           <motion.h1
             className={`font-poppins text-3xl font-medium ${
               theme === "dark" ? "text-white" : "lightBoldText"
@@ -56,7 +58,10 @@ const Register: React.FC = () => {
           </motion.h1>
         </motion.div>
         {/* Registration form */}
-        <motion.form className="flex justify-center items-start flex-col" onSubmit={handleRegister}>
+        <motion.form
+          className="flex justify-center items-start flex-col"
+          onSubmit={handleRegister}
+        >
           <motion.label
             className={`text-lg font-medium ${
               theme === "dark" ? "text-white" : "lightBoldText"
@@ -68,7 +73,9 @@ const Register: React.FC = () => {
             placeholder="Type Your Full Name"
             className={`border border-gray-400 rounded-xl p-2 w-full ${
               theme === "dark" ? "placeholder-blue-50" : "placeholder-black"
-            } text-xs placeholder-opacity-25 `}
+            } ${
+              theme === "dark" ? "text-white" : "lightText"
+            } text-xs placeholder-opacity-25`}
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -85,7 +92,9 @@ const Register: React.FC = () => {
             placeholder="Type Your UserName"
             className={`border border-gray-400 rounded-xl p-2 w-full ${
               theme === "dark" ? "placeholder-blue-50" : "placeholder-black"
-            } text-xs placeholder-opacity-25 `}
+            } ${
+              theme === "dark" ? "text-white" : "lightText"
+            } text-xs placeholder-opacity-25`}
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -102,7 +111,9 @@ const Register: React.FC = () => {
             placeholder="Type Your Password"
             className={`border border-gray-400 rounded-xl p-2 w-full ${
               theme === "dark" ? "placeholder-blue-50" : "placeholder-black"
-            } text-xs placeholder-opacity-25 `}
+            } ${
+              theme === "dark" ? "text-white" : "lightText"
+            } text-xs placeholder-opacity-25`}
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -113,9 +124,7 @@ const Register: React.FC = () => {
             <motion.p className="text-blue-500 mt-2">Registering...</motion.p>
           )}
           {/* Show error message if registration fails */}
-          {error && (
-            <motion.p className="text-red-500 mt-2">{error}</motion.p>
-          )}
+          {error && <motion.p className="text-red-500 mt-2">{error}</motion.p>}
           <motion.button
             className="p-2 w-full bg-black rounded-xl text-white mt-5"
             type="submit"
@@ -138,4 +147,5 @@ const Register: React.FC = () => {
     </motion.div>
   );
 };
+
 export default Register;

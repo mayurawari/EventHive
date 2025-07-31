@@ -40,8 +40,10 @@ export const RegisterUser = createAsyncThunk(
     async (credentials: { name: string, email: string, password: string }, thunkApi) => {
         try {
             const res = await axios.post("https://event-hive-backend.vercel.app/api/register", credentials);
-
-            localStorage.setItem("token", res.data.token)
+             
+            if(res.status === 200){
+                localStorage.setItem("token", res.data.token)
+            }
 
             return res.data
 

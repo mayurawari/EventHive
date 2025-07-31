@@ -5,30 +5,22 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { LoginUser } from "../../features/authenticaton/authSlice";
 
-// Login page for user authentication
 const Login: React.FC = () => {
-  // Redux hooks for dispatching actions and selecting state
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
   const { isLoading, error, isLoggedin } = useAppSelector((state) => state.auth);
-
-  // Local state for form fields
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  // React Router hook for navigation
   const navigate = useNavigate();
 
-  // Redirect to home if already logged in
   useEffect(() => {
     if (isLoggedin) {
       navigate("/");
     }
   }, [isLoggedin, navigate]);
 
-  // Handle form submission
   const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
     dispatch(LoginUser({ email, password }));
   };
 
@@ -37,72 +29,74 @@ const Login: React.FC = () => {
       <motion.div
         className={`${
           theme === "dark" ? "darkBg" : "lightBg"
-        } w-full h-screen flex justify-center items-center flex-col `}
+        } w-full min-h-screen flex justify-center items-center flex-col p-4 sm:p-8`}
       >
         <motion.div
-          className={`w-120  rounded-3xl ${
+          className={`w-full max-w-sm sm:max-w-md rounded-3xl ${
             theme === "dark"
               ? "bg-transparent border border-white"
               : "bg-transparent border-2 border-[#FFA2B6]"
-          } p-5`}
+          } p-6 sm:p-10 shadow-md`}
         >
-          <motion.div
-            className={`w-full m-2  flex justify-center items-center`}
-          >
+          <motion.div className="w-full mb-6 flex justify-center items-center">
             <motion.h1
-              className={`font-poppins text-3xl font-medium ${
+              className={`font-poppins text-2xl sm:text-3xl font-medium ${
                 theme === "dark" ? "text-white" : "lightBoldText"
               }`}
             >
               Log In
             </motion.h1>
           </motion.div>
-          {/* Login form */}
-          <motion.form className="flex justify-center items-start flex-col" onSubmit={handleLogin}>
+          <motion.form
+            className="flex flex-col gap-4"
+            onSubmit={handleLogin}
+          >
             <motion.label
-              className={`text-lg font-medium ${
+              className={`text-base sm:text-lg font-medium ${
                 theme === "dark" ? "text-white" : "lightBoldText"
-              } mt-4`}
+              }`}
             >
               Email ID
             </motion.label>
             <motion.input
               placeholder="Type Your UserName"
-              className={`border border-gray-400 rounded-xl p-2 w-full ${
+              className={`border border-gray-400 rounded-xl p-2 w-full text-sm sm:text-base ${
                 theme === "dark" ? "placeholder-blue-50" : "placeholder-black"
-              } text-xs placeholder-opacity-25 `}
+              } placeholder-opacity-25`}
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
             <motion.label
-              className={`text-lg font-medium ${
+              className={`text-base sm:text-lg font-medium ${
                 theme === "dark" ? "text-white" : "lightBoldText"
-              } mt-4`}
+              }`}
             >
               Password
             </motion.label>
             <motion.input
               placeholder="Type Your Password"
-              className={`border border-gray-400 rounded-xl p-2 w-full ${
+              className={`border border-gray-400 rounded-xl p-2 w-full text-sm sm:text-base ${
                 theme === "dark" ? "placeholder-blue-50" : "placeholder-black"
-              } text-xs placeholder-opacity-25 `}
+              } placeholder-opacity-25`}
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {/* Show loading indicator while logging in */}
             {isLoading && (
-              <motion.p className="text-blue-500 mt-2">Logging in...</motion.p>
+              <motion.p className="text-blue-500 mt-2 text-sm sm:text-base">
+                Logging in...
+              </motion.p>
             )}
-            {/* Show error message if login fails */}
             {error && (
-              <motion.p className="text-red-500 mt-2">{error}</motion.p>
+              <motion.p className="text-red-500 mt-2 text-sm sm:text-base">
+                {error}
+              </motion.p>
             )}
             <motion.button
-              className="p-2 w-full bg-black rounded-xl text-white mt-5"
+              className="p-3 w-full bg-black rounded-xl text-white mt-6 text-base sm:text-lg disabled:opacity-50"
               type="submit"
               disabled={isLoading}
             >
@@ -111,12 +105,12 @@ const Login: React.FC = () => {
           </motion.form>
         </motion.div>
         <motion.div
-          className={`text-sm font-medium ${
+          className={`text-sm sm:text-base font-medium mt-6 ${
             theme === "dark" ? "text-white" : "lightText"
-          } m-3`}
+          }`}
         >
-          Don't have an account ?{" "}
-          <motion.span className="text-sm font-medium mx-1 text-blue-600">
+          Don't have an account?{" "}
+          <motion.span className="text-blue-600 hover:underline cursor-pointer">
             <Link to="/Register">Sign up</Link>
           </motion.span>
         </motion.div>

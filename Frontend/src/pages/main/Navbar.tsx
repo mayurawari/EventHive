@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import Toggle from "../../components/buttons/Toggle";
 import { useAppSelector } from "../../hooks/useAppSelector";
+import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { closeSidebar, toggleSidebar } from '../../features/theme/sliderSlice';
+import logo from '../../assets/png/logo.png';
 
 const navItems = [
   { label: "Home", path: "/" },
@@ -18,11 +21,12 @@ const navItems = [
 
 const Navbar: React.FC = () => {
   const theme = useAppSelector((state) => state.theme.theme);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const sidebarOpen = useAppSelector((state) => state.sidebar.isOpen);
+  const dispatch = useAppDispatch();
   const location = useLocation();
 
   const menuItemClass =
-    `p-2 flex justify-center items-center font-poppins font-[500] text-lg ` +
+    `p-2 flex justify-center items-center font-poppins font-[500] text-sm ` +
     (theme === "dark" ? "text-white" : "text-[#d6536d]");
 
   return (
@@ -35,12 +39,12 @@ const Navbar: React.FC = () => {
         backgroundColor: theme === "dark" ? "" : "#ebe9e1"
       }}
       transition={{ duration: 0.15, ease: "easeInOut" }}
-      className="sticky top-0 h-20 flex justify-between items-center px-6 md:px-10 "
+      className="sticky top-0 h-20 flex justify-between items-center px-6 md:px-10 z-20 "
     >
       {/* Hamburger always visible */}
       <button
         aria-label="Open menu"
-        onClick={() => setSidebarOpen(true)}
+        onClick={() => dispatch(toggleSidebar())}
         className="flex flex-col gap-1 focus:outline-none z-50"
       >
         <span className={`block h-[3px] w-7 rounded-full transition-all duration-200 ${theme === "dark" ? "bg-white" : "bg-[#d6536d]"}`}></span>
@@ -49,6 +53,7 @@ const Navbar: React.FC = () => {
       </button>
 
       <div className="flex-1" />
+
 
       {/* Theme Toggle */}
       <Toggle className="" />
@@ -65,7 +70,7 @@ const Navbar: React.FC = () => {
             className={`absolute left-0 top-36 z-20 font-poppins font-extrabold text-[48px] md:text-[80px] text-white 
             ${theme === "dark" ? "bg-[#db3f88]" : "bg-black"}
              bg-[url('/textures/skulls.png')] bg-repeat rounded-bl-md rounded-tl-md p-3 md:p-4 rotate-270
-             hidden md:flex justify-end items-start`}
+             hidden xl:flex justify-end items-start`}
           >
             EventHive
           </motion.div>
@@ -81,21 +86,26 @@ const Navbar: React.FC = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -260, opacity: 0 }}
               transition={{ duration: 0.18, ease: "easeInOut" }}
-              className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 shadow-2xl z-40 flex flex-col p-7"
+              className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 z-[100] flex flex-col p-1"
             >
+              <div className="flex justify-between items-center ">
+              <div>
+                <img src={logo} alt="logo" className="w-20 " />
+              </div>
               <button
                 aria-label="Close menu"
-                className="mb-5 self-end text-2xl text-[#ff4e8a] font-bold"
-                onClick={() => setSidebarOpen(false)}
+                className=" justify-center items-center self-end text-4xl text-[#ff4e8a] font-thin h-full pr-5"
+                onClick={() => dispatch(closeSidebar())}
               >
                 ×
               </button>
+              </div>
               <ul className="flex flex-col gap-3 w-full">
                 {navItems.map((item) => (
                   <li key={item.path} className={menuItemClass}>
                     <Link
                       to={item.path}
-                      onClick={() => setSidebarOpen(false)}
+                      onClick={() => dispatch(closeSidebar())}
                     >
                       {item.label}
                     </Link>
@@ -104,12 +114,12 @@ const Navbar: React.FC = () => {
               </ul>
             </motion.aside>
             <motion.div
-              className="fixed inset-0 bg-grey-100 z-30"
+              className="fixed inset-0 bg-gray-500 z-[90]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.14 }}
-              onClick={() => setSidebarOpen(false)}
+              onClick={() => closeSidebar()}
             />
           </>
         )}
