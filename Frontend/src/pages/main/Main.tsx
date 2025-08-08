@@ -4,6 +4,9 @@ import { motion } from "motion/react";
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { useNavigate } from "react-router-dom";
 import Footer from "./footer";
+import ShinyText from "../../Designer components/ShinyText";
+import TextType from "../../Designer components/TextType";
+
 type Props = {};
 
 const Main: React.FC<Props> = () => {
@@ -58,6 +61,7 @@ const Main: React.FC<Props> = () => {
             <motion.p
               animate={{
                 opacity: [0, 1],
+
                 y: [10, 0],
               }}
               transition={{
@@ -68,9 +72,42 @@ const Main: React.FC<Props> = () => {
               }}
               className={`${
                 theme === "dark" ? "text-white" : "text-[#E43D12]"
-              } text-[30px]  font-poppins font-bold sm:text-4xl md:text-5xl lg:text-6xl`}
+              } text-[16px]  font-poppins font-[400] sm:text-xl md:text-xl lg:text-2xl`}
             >
-              EventHive Fuels
+              <TextType
+                text={[
+                  "Welcome Aboard to EventHive",
+                  "For Event Enthusiasts",
+                  "Happy Exploring!",
+                ]}
+                typingSpeed={75}
+                pauseDuration={1500}
+                showCursor={true}
+                cursorCharacter="|"
+              />
+            </motion.p>
+            <motion.p
+              animate={{
+                opacity: [0, 1],
+
+                y: [10, 0],
+              }}
+              transition={{
+                type: "spring",
+                duration: 0.5,
+                bounce: 0,
+                staggerChildren: 0.25,
+              }}
+              className={`${
+                theme === "dark" ? "text-white" : "text-[#E43D12]"
+              } text-[30px]  font-poppins font-bold sm:text-4xl md:text-5xl lg:text-6xl mt-5`}
+            >
+              <ShinyText
+                text="EventHive Fuels"
+                disabled={false}
+                speed={1}
+                className="custom-class"
+              />
             </motion.p>
             <motion.span
               animate={{
@@ -87,19 +124,24 @@ const Main: React.FC<Props> = () => {
                 theme === "dark" ? "text-white" : "text-[#E43D12]"
               } font-bold text-[30px] sm:text-4xl md:text-5xl lg:text-6xl sm-align-center sm-justify-center`}
             >
-              Their Fun
+              <ShinyText
+                text="Their Fun"
+                disabled={false}
+                speed={2}
+                className="custom-class"
+              />
             </motion.span>
 
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center flex-col gap-2 mt-5 sm:flex-row">
               <motion.button
                 onClick={() => navigate("/Register")}
-                className={`w-40 h-11 rounded-2xl text-[16px] font-medium ${
+                className={`w-60 h-11 rounded-2xl text-[16px] font-medium ${
                   theme === "dark" ? "text-white" : "text-[#E43D12]"
                 } ${
                   theme === "dark" ? "bg-black" : "bg-[#FFA2B6]"
                 } font-poppins m-2`}
               >
-                Create Profile
+                Register as an Organizer
               </motion.button>
               <motion.button
                 onClick={() => navigate("/Login")}
@@ -109,7 +151,7 @@ const Main: React.FC<Props> = () => {
                   theme === "dark" ? "bg-black" : "bg-[#FFA2B6]"
                 } font-poppins m-2`}
               >
-                Hop In
+                Get Started
               </motion.button>
             </div>
           </div>

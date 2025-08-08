@@ -1,9 +1,12 @@
+// [FE/frontend.md > App Structure]: Main App component, routing, and state management
+// [FE/designing.md > Colors]: UI foundation uses design system
 import "./App.css";
 import Home from "./pages/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import Movies from "./pages/screens/Movies";
-import Events from "./pages/screens/Events";
+import Events from "./pages/Events"; // [FE/frontend.md > App Flows > Event Browsing]: Updated to use new Events page
+import EventDetail from "./pages/EventDetail"; // [FE/frontend.md > App Flows > Event Browsing]: Event detail page
 import Sports from "./pages/screens/Sports";
 import Concerts from "./pages/screens/Concerts";
 import Traditional from "./pages/screens/Traditional";
@@ -40,6 +43,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/Movies" element={<Movies />} />
           <Route path="/Events" element={<Events />} />
+          <Route path="/event/:eventId" element={<EventDetail />} />
           <Route path="/Sports" element={<Sports />} />
           <Route path="/Concerts" element={<Concerts />} />
           <Route path="/Traditional" element={<Traditional />} />
