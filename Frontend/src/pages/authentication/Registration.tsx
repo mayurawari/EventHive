@@ -1,3 +1,5 @@
+// [FE/frontend.md > App Flows > Authentication]: Registration component with backend integration
+// [FE/designing.md > Colors]: UI uses design system color palette
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -5,43 +7,40 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { RegisterUser } from "../../features/authenticaton/authSlice";
 
-// Registration page for new users
 const Register: React.FC = () => {
-  // Redux hooks for dispatching actions and selecting state
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
-  const { isLoading, error, isLoggedin } = useAppSelector(
-    (state) => state.auth
-  );
+  const { isLoading, error, isLoggedin } = useAppSelector((state) => state.auth);
 
-  // Local state for form fields
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // React Router hook for navigation
   const navigate = useNavigate();
 
-  // Redirect to home if already logged in (after registration)
   useEffect(() => {
     if (isLoggedin) {
       navigate("/");
     }
   }, [isLoggedin, navigate]);
 
-  // Handle form submission
   const handleRegister = (e: React.FormEvent) => {
-    e.preventDefault(); // Prevent default form submission
-    dispatch(RegisterUser({ name, email, password }));
+    e.preventDefault();
+    dispatch(RegisterUser({ username, email, password }));
   };
 
   return (
     <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       className={`${
         theme === "dark" ? "darkBg" : "lightBg"
       } w-full min-h-screen flex justify-center items-center flex-col px-3`}
     >
       <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
         className={`w-full max-w-xs sm:max-w-sm md:max-w-md rounded-3xl ${
           theme === "dark"
             ? "bg-transparent border border-white"
@@ -57,7 +56,6 @@ const Register: React.FC = () => {
             Create Profile
           </motion.h1>
         </motion.div>
-        {/* Registration form */}
         <motion.form
           className="flex justify-center items-start flex-col"
           onSubmit={handleRegister}
@@ -67,7 +65,7 @@ const Register: React.FC = () => {
               theme === "dark" ? "text-white" : "lightBoldText"
             }`}
           >
-            Name
+            Username
           </motion.label>
           <motion.input
             placeholder="Type Your Full Name"
@@ -77,8 +75,8 @@ const Register: React.FC = () => {
               theme === "dark" ? "text-white" : "lightText"
             } text-xs placeholder-opacity-25`}
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
           <motion.label
@@ -119,14 +117,22 @@ const Register: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {/* Show loading indicator while registering */}
           {isLoading && (
             <motion.p className="text-blue-500 mt-2">Registering...</motion.p>
           )}
-          {/* Show error message if registration fails */}
-          {error && <motion.p className="text-red-500 mt-2">{error}</motion.p>}
+          {error && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-red-500 mt-2 text-center bg-red-50 p-2 rounded-lg"
+            >
+              {error}
+            </motion.div>
+          )}
           <motion.button
-            className="p-2 w-full bg-black rounded-xl text-white mt-5"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="p-3 w-full bg-buttonBlack text-white rounded-xl mt-5 hover:bg-gray-800 transition-colors disabled:opacity-50"
             type="submit"
             disabled={isLoading}
           >
@@ -135,12 +141,18 @@ const Register: React.FC = () => {
         </motion.form>
       </motion.div>
       <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
         className={`text-sm font-medium ${
-          theme === "dark" ? "text-white" : "lightText"
+          theme === "dark" ? "text-white" : "text-gray-600"
         } m-3`}
       >
-        Already have an account ?{" "}
-        <motion.span className="text-sm font-medium mx-1 text-blue-600">
+        Already have an account?{" "}
+        <motion.span 
+          whileHover={{ scale: 1.05 }}
+          className="text-primary hover:underline cursor-pointer font-semibold"
+        >
           <Link to="/Login">Login In</Link>
         </motion.span>
       </motion.div>

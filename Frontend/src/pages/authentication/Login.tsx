@@ -1,3 +1,5 @@
+// [FE/frontend.md > App Flows > Authentication]: Login component with backend integration
+// [FE/designing.md > Colors]: UI uses design system color palette
 import React, { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { useAppSelector } from "../../hooks/useAppSelector";
@@ -9,7 +11,7 @@ const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
   const { isLoading, error, isLoggedin } = useAppSelector((state) => state.auth);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -21,17 +23,22 @@ const Login: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(LoginUser({ email, password }));
+    dispatch(LoginUser({ username, password }));
   };
 
   return (
     <>
       <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         className={`${
           theme === "dark" ? "darkBg" : "lightBg"
         } w-full min-h-screen flex justify-center items-center flex-col p-4 sm:p-8`}
       >
         <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
           className={`w-full max-w-sm sm:max-w-md rounded-3xl ${
             theme === "dark"
               ? "bg-transparent border border-white"
@@ -56,16 +63,16 @@ const Login: React.FC = () => {
                 theme === "dark" ? "text-white" : "lightBoldText"
               }`}
             >
-              Email ID
+              Username
             </motion.label>
             <motion.input
               placeholder="Type Your UserName"
               className={`border border-gray-400 rounded-xl p-2 w-full text-sm sm:text-base ${
                 theme === "dark" ? "placeholder-blue-50" : "placeholder-black"
               } placeholder-opacity-25`}
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               required
             />
             <motion.label
@@ -96,7 +103,9 @@ const Login: React.FC = () => {
               </motion.p>
             )}
             <motion.button
-              className="p-3 w-full bg-black rounded-xl text-white mt-6 text-base sm:text-lg disabled:opacity-50"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="p-3 w-full bg-buttonBlack text-white rounded-xl mt-6 text-base sm:text-lg disabled:opacity-50 hover:bg-gray-800 transition-colors"
               type="submit"
               disabled={isLoading}
             >
@@ -105,12 +114,18 @@ const Login: React.FC = () => {
           </motion.form>
         </motion.div>
         <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
           className={`text-sm sm:text-base font-medium mt-6 ${
-            theme === "dark" ? "text-white" : "lightText"
+            theme === "dark" ? "text-white" : "text-gray-600"
           }`}
         >
           Don't have an account?{" "}
-          <motion.span className="text-blue-600 hover:underline cursor-pointer">
+          <motion.span 
+            whileHover={{ scale: 1.05 }}
+            className="text-primary hover:underline cursor-pointer font-semibold"
+          >
             <Link to="/Register">Sign up</Link>
           </motion.span>
         </motion.div>

@@ -5,136 +5,89 @@ import nodemailer from "nodemailer";
 import crypto from "crypto";
 import sessionIdModel from "../models/sessionIdmodel.js";
 import { randomUUID } from "crypto";
+import { config } from "dotenv";
+config();
 const accesskey = process.env.ACCESS_KEY;
 const refreshkey = process.env.REFRESH_KEY;
 
+// [BE/backend.md > Best Practices > Error Handling]: Refactored RegisterController for robust error handling and async/await usage
 const RegisterController = async (req, res) => {
   const { username, email, password, role } = req.body;
   try {
     if (!username) {
-      res.send("Please Provide your Username");
+      return res.status(400).json({ error: "Please provide your username" });
     }
     if (!email) {
-      res.send("Please Provide your Email");
+      return res.status(400).json({ error: "Please provide your email" });
     }
     if (!password) {
-      res.send("Please Provide your Password");
+      return res.status(400).json({ error: "Please provide your password" });
     }
-
-    const finduser = await usermodel.findOne({ username, email: email });
+    const finduser = await usermodel.findOne({ email });
 
     if (finduser) {
-      res.send(
-        "You are already registered with given email please try to login"
-      );
+      return res.status(409).json({ error: "You are already registered with this email. Please login." });
     }
 
-    bcrypt.hash(password, 4, async (err, hash) => {
-      if (err) {
-        console.log("error in hashing", err);
-      }
-      const newuser = new usermodel({
-        username,
-        email,
-        password: hash,
-        role,
-      });
-      await newuser.save();
+    const hash = await bcrypt.hash(password, 4);
+    const newuser = new usermodel({
+      username,
+      email,
+      password: hash,
+      role,
     });
-    res.status(200).send("Registered successfully");
+    await newuser.save();
+    return res.status(201).json({ message: "Registered successfully" , newuser});
   } catch (error) {
-    console.error("error while registerig the user", error);
+    // [BE/backend.md > Best Practices > Error Handling]: General fallback for registration errors
+    console.error("Error while registering the user", error);
+    return res.status(500).json({ error: "Internal server error during registration" });
   }
 };
 
+// [BE/backend.md > Best Practices > Error Handling]: Refactored LoginController for robust error handling and async/await usage
 const LoginController = async (req, res) => {
   const { username, password } = req.body;
   try {
     if (!username) {
-      res.status(400).send("Please Provide your Username");
+      return res.status(400).json({ error: "Please provide your username" });
     }
     if (!password) {
-      res.status(400).send("Please Provide your Password");
+      return res.status(400).json({ error: "Please provide your password" });
     }
-
-    const finduser = await usermodel.findOne({ username: username });
-
+    const finduser = await usermodel.findOne({ username });
     if (!finduser) {
-      res
-        .status(400)
-        .send(
-          "You are not registered. Please try to register and then try to Login"
-        );
+      return res.status(404).json({ error: "You are not registered. Please register first." });
     }
-
-    let passwordcheck = bcrypt.compare(
-      password,
-      finduser.password,
-      async (err, result) => {
-        if (err) {
-          console.log("error in bcrypt while comparing");
-        }
-
-        return result;
-      }
-    );
-
-    if (!passwordcheck) {
-      res.status(400).send("Password is incorrect");
+    const passwordMatch = await bcrypt.compare(password, finduser.password);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: "Password is incorrect" });
     }
-
     const uniqueId = randomUUID();
-
-    const findsessionid = await sessionIdModel.findOne({
-      expiredsessionID: uniqueId,
-    });
-
+    const findsessionid = await sessionIdModel.findOne({ expiredsessionID: uniqueId });
     if (findsessionid) {
-      res.status(400).send("you are already loggedin try to logout");
+      return res.status(409).json({ error: "You are already logged in. Try to logout first." });
     }
-
     const payload = {
       username: finduser.username,
       email: finduser.email,
       role: finduser.role,
       sessionId: uniqueId,
     };
-
-    const accesstoken = jwt.sign(
-      payload,
-      accesskey,
-      { expiresIn: "15m" },
-      (err, token) => {
-        if (err) {
-          console.log("Error in Token genration");
-        }
-        console.log("accesstoken", token);
-        return token;
-      }
-    );
-
-    const refreshToken = jwt.sign(
-      payload,
-      refreshkey,
-      { expiresIn: "7d" },
-      (err, token) => {
-        if (err) {
-          console.log("Error while genrating token");
-        }
-        console.log("RefreshToken", token);
-      }
-    );
-
-    res.cookie("refreshtoken", refreshToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    const accessToken = jwt.sign(payload, accesskey, { expiresIn: "15m" });
+    const refreshToken = jwt.sign(payload, refreshkey, { expiresIn: "7d" });
+    // Save sessionId for tracking
+    await new sessionIdModel({ userID: finduser._id, sessionId: uniqueId }).save();
+    return res.status(200).json({
+      message: "Login successful",
+      accessToken,
+      refreshToken,
+      user: { username: finduser.username, email: finduser.email, role: finduser.role },
     });
-
-    res.status(200).send({ accessToken: `Login Successfully ${accesstoken}` });
   } catch (error) {
-    console.error("error while registerig the user", error);
+    // [BE/backend.md > Best Practices > Error Handling]: General fallback for login errors
+    console.error("Error during login", error);
+    return res.status(500).json({ error: "Internal server error during login" });
   }
 };
 
