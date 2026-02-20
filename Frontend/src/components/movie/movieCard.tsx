@@ -87,7 +87,7 @@ const movieCard = ({
       </section>
 
       {/* Most Popular Section */}
-      <section className="w-full mt-2 mb-10">
+      <section className="w-full mt-3 mb-10">
         <PopularMoviesCard movies = {popular} genre = {genre} loading={loading.popular} error={error.popular} theme={theme}/>
       </section>
     </div>
