@@ -86,7 +86,7 @@ const Navbar: React.FC = () => {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -260, opacity: 0 }}
               transition={{ duration: 0.18, ease: "easeInOut" }}
-              className="fixed top-0 left-0 h-full w-64 bg-white dark:bg-gray-900 z-[100] flex flex-col p-1"
+              className={`fixed top-0 left-0 h-full w-64 ${theme=== "dark" ?  "dark:bg-gray-900" : "bg-white"} z-[100] flex flex-col p-1`}
             >
               <div className="flex justify-between items-center ">
               <div>
