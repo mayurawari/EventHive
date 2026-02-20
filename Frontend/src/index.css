@@ -32,3 +32,6 @@
 * {
   box-sizing: border-box;
 }
+:root{
+  font-family: "Poppins", sans-serif;
+}

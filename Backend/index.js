@@ -6,6 +6,7 @@ import cors from "cors";
 import Authroute from "./src/routes/authroute.js";
 import cookieParser from "cookie-parser";
 import eventRoute from "./src/routes/eventRoute.js";
+import movierouter from "./src/routes/movie.routes.js";
 
 const server = express();
 
@@ -15,6 +16,7 @@ server.use(cors());
 server.use("/api",Authroute);
 // [BE/backend.md > Expansion Areas > Event CRUD]: Registered eventRoute for event management endpoints
 server.use("/api", eventRoute);
+server.use("/api", movierouter);
 
 let port = process.env.PORT || 5050;
 let url = process.env.DB_URL;
