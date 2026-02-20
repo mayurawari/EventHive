@@ -105,7 +105,7 @@ const Login: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="p-3 w-full bg-buttonBlack text-white rounded-xl mt-6 text-base sm:text-lg disabled:opacity-50 hover:bg-gray-800 transition-colors"
+              className="p-3 w-full bg-buttonBlack text-white rounded-xl mt-6 text-base sm:text-lg disabled:opacity-50 bg-black hover:bg-gray-950 transition-colors"
               type="submit"
               disabled={isLoading}
             >

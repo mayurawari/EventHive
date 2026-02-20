@@ -132,7 +132,7 @@ const Register: React.FC = () => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="p-3 w-full bg-buttonBlack text-white rounded-xl mt-5 hover:bg-gray-800 transition-colors disabled:opacity-50"
+            className="p-3 w-full bg-buttonBlack text-white rounded-xl mt-5 bg-black hover:bg-gray-950 transition-colors disabled:opacity-50"
             type="submit"
             disabled={isLoading}
           >
