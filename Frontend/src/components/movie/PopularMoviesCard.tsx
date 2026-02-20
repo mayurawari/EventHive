@@ -14,7 +14,6 @@ const PopularMoviesCard = ({
   movies = [],
   genre = [],
   loading,
-  error,
   theme,
 }: Moviesprops) => {
 

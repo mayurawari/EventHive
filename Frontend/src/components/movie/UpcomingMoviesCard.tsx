@@ -44,7 +44,6 @@ const UpcomingMoviesCard = ({
   movies = [],
   genre = [],
   loading,
-  error,
   theme,
 }: Moviesprops) => {
 
